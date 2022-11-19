@@ -15,7 +15,7 @@ export const ColourBox = ({ colour }) => {
   return (
     <View style={[styles.box, bgColour]}>
       <Text style={[styles.text, textColour]}>
-        {colour.name} {colour.code}
+        {colour.name}: {colour.code}
       </Text>
     </View>
   )
@@ -25,6 +25,15 @@ const styles = StyleSheet.create({
   box: {
     margin: 3,
     padding: 6,
+
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 1,
   },
   text: {
     fontSize: 16,
