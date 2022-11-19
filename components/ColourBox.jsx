@@ -1,9 +1,22 @@
 import { View, Text, StyleSheet } from "react-native"
 
 export const ColourBox = ({ colour }) => {
+  const bgColour = {
+    backgroundColor: colour.code,
+  }
+
+  const textColour = {
+    color:
+      parseInt(colour.code.replace("#", ""), 16) > 0xffffff / 1.1
+        ? "black"
+        : "white",
+  }
+
   return (
-    <View style={[styles.box, { backgroundColor: colour.code }]}>
-      <Text style={styles.text}>{colour.name}</Text>
+    <View style={[styles.box, bgColour]}>
+      <Text style={[styles.text, textColour]}>
+        {colour.name} {colour.code}
+      </Text>
     </View>
   )
 }
@@ -17,6 +30,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "center",
     fontWeight: "bold",
-    color: "white",
   },
 })
