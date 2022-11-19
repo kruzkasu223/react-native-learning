@@ -1,5 +1,6 @@
 // import { StatusBar } from "expo-status-bar"
 import { View, Text, SafeAreaView, StyleSheet } from "react-native"
+import { ColourBox } from "./components/ColourBox"
 
 const App = () => {
   return (
@@ -9,10 +10,10 @@ const App = () => {
           Here are some boxes of different colours
         </Text>
         <View>
-          <Text style={[styles.box, styles.cyan]}>Cyan</Text>
-          <Text style={[styles.box, styles.blue]}>Blue</Text>
-          <Text style={[styles.box, styles.magenta]}>Magenta</Text>
-          <Text style={[styles.box, styles.orange]}>Orange</Text>
+          <ColourBox colour={{ name: "Cyan", code: "#2aa198" }} />
+          <ColourBox colour={{ name: "Blue", code: "#268bd2" }} />
+          <ColourBox colour={{ name: "Magenta", code: "#d33682" }} />
+          <ColourBox colour={{ name: "Orange", code: "#cb4b16" }} />
         </View>
         {/* <StatusBar style="auto" /> */}
       </View>
