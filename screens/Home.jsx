@@ -1,74 +1,60 @@
+import { useCallback, useEffect, useState } from "react"
 import {
   View,
-  Text,
   TouchableOpacity,
   FlatList,
   StyleSheet,
+  Text,
+  // RefreshControl,
 } from "react-native"
 import { ColourPalettePreview } from "../components/ColourPalettePreview"
 
-const COLOUR_PALETTES = [
-  {
-    paletteName: "Solarized",
-    paletteColour: [
-      { name: "Base03", code: "#002b36" },
-      { name: "Base02", code: "#073642" },
-      { name: "Base01", code: "#586e75" },
-      { name: "Base00", code: "#657b83" },
-      { name: "Base0", code: "#839496" },
-      { name: "Base1", code: "#93a1a1" },
-      { name: "Base2", code: "#eee8d5" },
-      { name: "Base3", code: "#fdf6e3" },
-      { name: "Yellow", code: "#b58900" },
-      { name: "Orange", code: "#cb4b16" },
-      { name: "Red", code: "#dc322f" },
-      { name: "Magenta", code: "#d33682" },
-      { name: "Violet", code: "#6c71c4" },
-      { name: "Blue", code: "#268bd2" },
-      { name: "Cyan", code: "#2aa198" },
-      { name: "Green", code: "#859900" },
-    ],
-  },
-  {
-    paletteName: "Rainbow",
-    paletteColour: [
-      { name: "Red", code: "#FF0000" },
-      { name: "Orange", code: "#FF7F00" },
-      { name: "Yellow", code: "#FFFF00" },
-      { name: "Green", code: "#00FF00" },
-      { name: "Violet", code: "#8B00FF" },
-    ],
-  },
-  {
-    paletteName: "Frontend Masters",
-    paletteColour: [
-      { name: "Red", code: "#c02d28" },
-      { name: "Black", code: "#3e3e3e" },
-      { name: "Grey", code: "#8a8a8a" },
-      { name: "White", code: "#ffffff" },
-      { name: "Orange", code: "#e66225" },
-    ],
-  },
-]
-
 export const Home = ({ navigation }) => {
+  const [colourPalettes, setColourPalettes] = useState([])
+  const [isRefreshing, setIsRefreshing] = useState(false)
+
+  const fetchColourPalettes = useCallback(async () => {
+    const res = await fetch(
+      "https://color-palette-api.kadikraman.vercel.app/palettes"
+    )
+    if (res.ok) {
+      const data = await res.json()
+      setColourPalettes(data)
+    }
+  }, [])
+
+  useEffect(() => {
+    fetchColourPalettes()
+  }, [])
+
+  const handleRefresh = useCallback(async () => {
+    setIsRefreshing(true)
+    await fetchColourPalettes()
+    setTimeout(() => {
+      setIsRefreshing(false)
+    }, 1000)
+  }, [])
+
   return (
     <View style={styles.container}>
       <FlatList
-        data={COLOUR_PALETTES}
-        keyExtractor={(colours) => colours.paletteName}
+        data={colourPalettes}
+        keyExtractor={(colors) => colors.id}
         renderItem={({ item }) => (
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("ColourPalette", {
-                name: item.paletteName,
-                colours: item.paletteColour,
-              })
+              navigation.navigate("ColourPalette", item)
             }}
           >
             <ColourPalettePreview palette={item} />
           </TouchableOpacity>
         )}
+        refreshing={isRefreshing}
+        onRefresh={handleRefresh}
+        // refreshControl={<RefreshControl refreshing={true} onRefresh={()=>{}} />}
+        ListEmptyComponent={
+          <Text style={styles.text}>There's nothing to display...</Text>
+        }
       />
     </View>
   )
@@ -77,5 +63,10 @@ export const Home = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
+  },
+  text: {
+    fontSize: 16,
+    textAlign: "center",
+    fontWeight: "bold",
   },
 })

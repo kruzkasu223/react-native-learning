@@ -6,10 +6,12 @@ export const ColourPalettePreview = ({ palette }) => {
       <Text style={styles.text}>{palette.paletteName}</Text>
       <View>
         <FlatList
-          data={palette.paletteColour.slice(0, 5)}
-          keyExtractor={(colour) => colour.code}
+          data={palette.colors.slice(0, 5)}
+          keyExtractor={(colors) => colors.hexCode}
           renderItem={({ item }) => (
-            <View style={[styles.box, { backgroundColor: item.code }]}></View>
+            <View
+              style={[styles.box, { backgroundColor: item.hexCode }]}
+            ></View>
           )}
           horizontal
         />

@@ -13,7 +13,7 @@ const App = () => {
         <Stack.Screen
           name="ColourPalette"
           component={ColourPalette}
-          options={({ route }) => ({ title: route.params.name })}
+          options={({ route }) => ({ title: route.params.paletteName })}
         />
       </Stack.Navigator>
     </NavigationContainer>
