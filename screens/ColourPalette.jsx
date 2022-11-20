@@ -1,4 +1,5 @@
-import { View, Text, SafeAreaView, FlatList, StyleSheet } from "react-native"
+import { View, Text, FlatList, StyleSheet, Clipboard } from "react-native"
+import { TouchableOpacity } from "react-native-gesture-handler"
 import { ColourBox } from "../components/ColourBox"
 
 export const ColourPalette = ({ route }) => {
@@ -10,7 +11,15 @@ export const ColourPalette = ({ route }) => {
       <FlatList
         data={colors}
         keyExtractor={(color) => color.colorName}
-        renderItem={({ item }) => <ColourBox colour={item} />}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            onPress={() => {
+              Clipboard.setString(item.hexCode)
+            }}
+          >
+            <ColourBox colour={item} />
+          </TouchableOpacity>
+        )}
       />
     </View>
   )

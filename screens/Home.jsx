@@ -5,11 +5,11 @@ import {
   FlatList,
   StyleSheet,
   Text,
-  // RefreshControl,
 } from "react-native"
 import { ColourPalettePreview } from "../components/ColourPalettePreview"
 
-export const Home = ({ navigation }) => {
+export const Home = ({ route, navigation }) => {
+  const newColourPalette = route?.params?.newColourPalette
   const [colourPalettes, setColourPalettes] = useState([])
   const [isRefreshing, setIsRefreshing] = useState(false)
 
@@ -35,8 +35,25 @@ export const Home = ({ navigation }) => {
     }, 1000)
   }, [])
 
+  useEffect(() => {
+    if (newColourPalette) {
+      setColourPalettes((c) => [newColourPalette, ...c])
+    }
+  }, [newColourPalette])
+
   return (
     <View style={styles.container}>
+      <View>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("ColourPaletteModal", {
+              name: "Create New Colour Palette",
+            })
+          }}
+        >
+          <Text style={styles.createNewText}>Create New Colour Palette</Text>
+        </TouchableOpacity>
+      </View>
       <FlatList
         data={colourPalettes}
         keyExtractor={(colors) => colors.id}
@@ -51,7 +68,6 @@ export const Home = ({ navigation }) => {
         )}
         refreshing={isRefreshing}
         onRefresh={handleRefresh}
-        // refreshControl={<RefreshControl refreshing={true} onRefresh={()=>{}} />}
         ListEmptyComponent={
           <Text style={styles.text}>There's nothing to display...</Text>
         }
@@ -63,10 +79,18 @@ export const Home = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     padding: 10,
+    paddingBottom: 40,
   },
   text: {
     fontSize: 16,
     textAlign: "center",
+    fontWeight: "bold",
+  },
+  createNewText: {
+    marginLeft: 7,
+    marginBottom: 10,
+    fontSize: 18,
+    color: "#de3163",
     fontWeight: "bold",
   },
 })
