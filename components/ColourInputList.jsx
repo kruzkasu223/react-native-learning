@@ -1,5 +1,5 @@
 import { useCallback } from "react"
-import { FlatList, StyleSheet, Text, View } from "react-native"
+import { FlatList, StyleSheet, Text, View, VirtualizedList } from "react-native"
 import { COLORS } from "../data"
 import { ColourSwitchInput } from "./ColourSwitchInput"
 
@@ -17,7 +17,7 @@ export const ColourInputList = ({ selectedColours, setSelectedColours }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.inputNameLabel}>Choose atleast 5 colours</Text>
-      <FlatList
+      {/* <FlatList
         data={COLORS}
         keyExtractor={(colour) => colour.colorName}
         renderItem={({ item }) => (
@@ -29,6 +29,21 @@ export const ColourInputList = ({ selectedColours, setSelectedColours }) => {
             onChangeHandler={onChangeHandler}
           />
         )}
+      /> */}
+      <VirtualizedList
+        data={COLORS}
+        keyExtractor={(colour) => colour.colorName}
+        renderItem={({ item }) => (
+          <ColourSwitchInput
+            colour={item}
+            isSelected={
+              !!selectedColours?.find((c) => c.colorName === item.colorName)
+            }
+            onChangeHandler={onChangeHandler}
+          />
+        )}
+        getItemCount={(colours) => colours?.length}
+        getItem={(colours, index) => colours[index]}
       />
     </View>
   )

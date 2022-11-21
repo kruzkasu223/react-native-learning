@@ -1,6 +1,7 @@
 import { View, Text, FlatList, StyleSheet, Clipboard } from "react-native"
 import { TouchableOpacity } from "react-native-gesture-handler"
 import { ColourBox } from "../components/ColourBox"
+import Toast from "react-native-root-toast"
 
 export const ColourPalette = ({ route }) => {
   const { paletteName, colors } = route.params
@@ -15,6 +16,9 @@ export const ColourPalette = ({ route }) => {
           <TouchableOpacity
             onPress={() => {
               Clipboard.setString(item.hexCode)
+              Toast.show(`${item.colorName} copied to clipboard`, {
+                duration: 300,
+              })
             }}
           >
             <ColourBox colour={item} />

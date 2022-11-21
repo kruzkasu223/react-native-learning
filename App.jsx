@@ -3,6 +3,7 @@ import { createStackNavigator } from "@react-navigation/stack"
 import { ColourPalette } from "./screens/ColourPalette"
 import { ColourPaletteModal } from "./screens/ColourPaletteModal"
 import { Home } from "./screens/Home"
+import { RootSiblingParent } from "react-native-root-siblings"
 
 const RootStack = createStackNavigator()
 const MainStack = createStackNavigator()
@@ -22,20 +23,22 @@ const MainStackScreen = () => {
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <RootStack.Navigator screenOptions={{ presentation: "modal" }}>
-        <RootStack.Screen
-          name="Main"
-          component={MainStackScreen}
-          options={{ headerShown: false }}
-        />
-        <RootStack.Screen
-          name="ColourPaletteModal"
-          component={ColourPaletteModal}
-          options={({ route }) => ({ title: route.params.name })}
-        />
-      </RootStack.Navigator>
-    </NavigationContainer>
+    <RootSiblingParent>
+      <NavigationContainer>
+        <RootStack.Navigator screenOptions={{ presentation: "modal" }}>
+          <RootStack.Screen
+            name="Main"
+            component={MainStackScreen}
+            options={{ headerShown: false }}
+          />
+          <RootStack.Screen
+            name="ColourPaletteModal"
+            component={ColourPaletteModal}
+            options={({ route }) => ({ title: route.params.name })}
+          />
+        </RootStack.Navigator>
+      </NavigationContainer>
+    </RootSiblingParent>
   )
 }
 
