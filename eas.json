@@ -1,5 +1,15 @@
 {
   "build": {
+    "apk": {
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "app": {
+      "ios": {
+        "simulator": true
+      }
+    },
     "production": {}
   }
 }
